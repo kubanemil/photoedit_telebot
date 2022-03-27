@@ -1,7 +1,6 @@
 from PIL import Image, ImageDraw,   ImageFont
 import textwrap
-
-from scipy import rand
+import config
 from citaty import quotes
 from random import randint
 
@@ -26,6 +25,6 @@ def add_label(photo_src):
         draw.text((x,y), line, fill='white', font=font)
         y += line_height
     path_parts = photo_src.split('/')
-    final_path = './edited_photo/%s' % path_parts[-1]
+    final_path = './%s/%s' % (config.path_to_edited_folder, path_parts[-1])
     im.save(final_path)
     return final_path

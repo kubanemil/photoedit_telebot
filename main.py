@@ -1,10 +1,9 @@
+import config
 import telebot
 from telebot import types
-import config
-import time
+import time, os.path, glob
 from label_photo import add_label
-import glob
-import os.path
+
 
 
 token = config.TOKEN
@@ -13,11 +12,12 @@ bot = telebot.TeleBot(token)
 
 @bot.message_handler(commands=['start'])
 def welcome(message):
+    bot.send_sticker(message.chat.id, 'CAACAgIAAxUAAWI_48Bw5I6B3Wpc-E2z9E3kL2MtAAKCAAOw0PgMxiPKI5Nmy0YjBA')
     bot.reply_to(message, "Добро пожаловать, {}.".format(message.from_user.first_name))
     start_markup = types.InlineKeyboardMarkup(row_width=4)
     start_markup_btn1 = types.InlineKeyboardButton('Начать работу', callback_data='start')
     start_markup.add(start_markup_btn1)
-    bot.send_message(message.chat.id, "Здесь ты можешь генерировать мемы", reply_markup=start_markup)
+    bot.send_message(message.chat.id, "Здесь я добавлю рандомную запись на присланное тобой фото.", reply_markup=start_markup)
 
 
 @bot.message_handler(content_types=['photo', 'sticker'])
@@ -27,7 +27,7 @@ def edit(message):
         file_info = bot.get_file(message.photo[len(message.photo) - 1].file_id)
     except:
         file_info = bot.get_file(message.sticker.file_id)
-    # print(file_info.file_id)
+    # bot.send_message(message.chat.id, file_info.file_id)
     downloaded_file = bot.download_file(file_info.file_path)
     user_id = message.from_user.id
     # «YYYY-MM-DD_HH:mm_<user id>.jpg».
@@ -43,6 +43,11 @@ def edit(message):
     share_markup_btn1 = types.InlineKeyboardButton('Поделиться', callback_data='share')
     share_markup.add(share_markup_btn1)
     bot.send_photo(message.chat.id, img, caption='Ваше фото готово!', reply_markup=share_markup)
+
+@bot.message_handler(commands=['get_id'])
+def welcome(message):
+    bot.send_message(message.chat.id, "File id: {}.".format(message.sticker.file_id))
+    start_markup = types.InlineKeyboardMarkup(row_width=4)
 
 @bot.callback_query_handler(func=lambda call: True)
 def reply(call):

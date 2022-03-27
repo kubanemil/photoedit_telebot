@@ -1,4 +1,5 @@
 TOKEN = 'TOKEN'
-repost_chanel_id = "REPOST CHANNEL ID"
+repost_chanel_id = 'CHANNEL ID'
 path_to_quotes = 'quotes.txt'
 path_to_edited_folder = './edited_photo/'
+path_to_recieved_folder = './recieved_photo'
